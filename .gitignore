@@ -1,0 +1,13 @@
+# ignore
+node_modules
+*.sqlite*
+logs/*
+data/emojis
+.vscode
+.directory
+to-do.txt
+config.json
+private
+package-lock.json
+# do not ignore
+!.gitkeep
