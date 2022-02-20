@@ -3,17 +3,17 @@ const { MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const emojis = require('../../../utils/emojis.json')
 
-const limit = 100000000;
+const limit = 100000000000000;
 
 module.exports = class gambleCommand extends Command {
   constructor(client) {
     super(client, {
-      name: 'gamble',
-      aliases: ['spin', 'coinflip', 'heads', 'tails', 'roll'],
-      usage: 'gamble <point count>',
+      name: 'supergamble',
+      aliases: [],
+      usage: 'supergamble <point count>',
       description: 'Gamble your points. Limit: 10000',
       type: client.types.POINTS,
-      examples: ['gamble 1000'],
+      examples: ['supergamble 1000'],
       exclusive: true
     });
   }
@@ -28,6 +28,11 @@ module.exports = class gambleCommand extends Command {
               this.done(message.author.id)
               return this.sendErrorMessage(message, 0, `Please provide a valid point count`);
           }
+      }
+
+      if(points < 10000) {
+          this.done(message.author.id)
+          return this.sendErrorMessage(message, 1, `You must have 10000 points to Super Gamble!`)
       }
 
       if (amount < 0 || amount > points) {
@@ -56,18 +61,18 @@ module.exports = class gambleCommand extends Command {
               if (outcome === "lose") {
                   const embed = new MessageEmbed()
                       .setTitle(`${modifier ? emojis.Voted: ''}${message.author.username} gambling ${amount} Points ${emojis.point}`)
-                      .setDescription(`${emojis.fail} You lost! **You now have ${points - amount}** ${emojis.point}\n\n${modifier ? '' : emojis.Voted + `Get a +10% boost to your odds: \`${prefix}vote\``}`)
-                      .setFooter(`Your points: ${points - amount}.`, message.author.displayAvatarURL({dynamic: true}))
-                  message.client.db.users.updatePoints.run({points: -amount}, message.author.id, message.guild.id);
+                      .setDescription(`${emojis.fail} You lost! **You now have ${points - amount * 2}** ${emojis.point}\n\n${modifier ? '' : emojis.Voted + `Get a +10% boost to your odds: \`${prefix}vote\``}`)
+                      .setFooter(`Your points: ${points - amount * 2}.`, message.author.displayAvatarURL({dynamic: true}))
+                  message.client.db.users.updatePoints.run({points: -amount * 2}, message.author.id, message.guild.id);
                   msg.edit({embeds: [embed]})
               }
               //Win
               else {
                   const embed = new MessageEmbed()
                       .setTitle(`${modifier ? emojis.Voted: ''}${message.author.username} gambling ${amount} Points ${emojis.point}`)
-                      .setDescription(`🎉 You Won! **You now have ${points + amount}** ${emojis.point}`)
-                      .setFooter(`Your points: ${points + amount}.`, message.author.displayAvatarURL({dynamic: true}))
-                  message.client.db.users.updatePoints.run({points: amount}, message.author.id, message.guild.id);
+                      .setDescription(`🎉 You Won! **You now have ${points + amount * 2}** ${emojis.point}`)
+                      .setFooter(`Your points: ${points + amount * 2}.`, message.author.displayAvatarURL({dynamic: true}))
+                  message.client.db.users.updatePoints.run({points: amount * 2}, message.author.id, message.guild.id);
                   msg.edit({embeds: [embed]})
               }
               this.done(message.author.id)

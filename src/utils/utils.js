@@ -195,9 +195,6 @@ async function transferCrown(client, guild, crownRoleId) {
     }
   }));
 
-  // Clear points
-  client.db.users.wipeAllPoints.run(guild.id);
-
   if (quit) return;
 
   // Give role to winner

@@ -17,8 +17,8 @@ module.exports = class GivePointsCommand extends Command {
   run(message, args) {
     const member = this.getMemberFromMention(message, args[0]) || message.guild.members.cache.get(args[0]);
     if (!member) return this.sendErrorMessage(message, 0, `Please mention a user or provide a valid user ID`);
-    if (member.id === message.client.user.id)
-      return message.channel.send(`${emojis.fail} Thank you, you\'re too kind! But I must decline. I prefer not to take handouts.`);
+    // if (member.id === message.client.user.id)
+    //   return message.channel.send(`${emojis.fail} Thank you, you\'re too kind! But I must decline. I prefer not to take handouts.`);
     const amount = parseInt(args[1]);
     const points = message.client.db.users.selectPoints.pluck().get(message.author.id, message.guild.id);
     if (isNaN(amount) === true || !amount)
